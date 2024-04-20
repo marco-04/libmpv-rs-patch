@@ -20,7 +20,7 @@ members = ["libmpv-sys"]
 
 [package]
 name = "libmpv"
-version = "2.0.1"
+version = "2.0.2"
 edition = "2018"
 authors = ["ParadoxSpiral <paradoxspiral@riseup.net>"]
 license = "LGPL-2.1"
@@ -38,7 +38,7 @@ libmpv-sys = { path = "libmpv-sys", version = "3.1.0" }
 crossbeam = "0.7"
 
 [features]
-default = ["protocols", "render", "mpv-current"]
+default = ["protocols", "render"]
 protocols = [] # Enable custom protocol callbacks
 render = [] # Enable custom rendering
 build_libmpv = [] # build libmpv automatically, provided MPV_SOURCE is set

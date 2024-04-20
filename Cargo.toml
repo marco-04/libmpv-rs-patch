@@ -38,10 +38,11 @@ libmpv-sys = { path = "libmpv-sys", version = "3.1.0" }
 crossbeam = "0.7"
 
 [features]
-default = ["protocols", "render"]
+default = ["protocols", "render", "mpv-current"]
 protocols = [] # Enable custom protocol callbacks
 render = [] # Enable custom rendering
 build_libmpv = [] # build libmpv automatically, provided MPV_SOURCE is set
+mpv-current = [] # use patched version of the library to work with mpv v0.38.0
 
 [badges]
 travis-ci = { repository = "https://github.com/ParadoxSpiral/mpv-rs", branch = "master" } 

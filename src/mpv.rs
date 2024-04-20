@@ -686,6 +686,8 @@ impl Mpv {
     /// # Peculiarities
     /// `loadfile` is kind of asynchronous, any additional option is set during loading,
     /// [specifics](https://github.com/mpv-player/mpv/issues/4089).
+    #[cfg(feature = "mpv-current")]
+    /// Patched version of playlist_load_files to work with mpv v0.38.0
     pub fn playlist_load_files(&self, files: &[(&str, FileState, Option<i32>, Option<&str>)]) -> Result<()> {
         for (i, elem) in files.iter().enumerate() {
             let index = elem.2.unwrap_or(0).to_string();
@@ -694,6 +696,26 @@ impl Mpv {
             let ret = self.command(
                 "loadfile",
                 &[&format!("\"{}\"", elem.0), elem.1.val(), &index, args],
+            );
+
+            if let Err(err) = ret {
+                return Err(Error::Loadfiles {
+                    index: i,
+                    error: ::std::rc::Rc::new(err),
+                });
+            }
+        }
+        Ok(())
+    }
+    #[cfg(not(feature = "mpv-current"))]
+    /// Old version of playlist_load_files to work with mpv < v0.38.0
+    pub fn playlist_load_files(&self, files: &[(&str, FileState, Option<&str>)]) -> Result<()> {
+        for (i, elem) in files.iter().enumerate() {
+            let args = elem.2.unwrap_or("");
+
+            let ret = self.command(
+                "loadfile",
+                &[&format!("\"{}\"", elem.0), elem.1.val(), args],
             );
 
             if let Err(err) = ret {
